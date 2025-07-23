@@ -2193,9 +2193,7 @@ static void * DocsisLinkMonitorThread(void *pVoid)
         if(docsis_getCMStatus(cBuf) != RETURN_OK)
         {
             CcspTraceInfo(("%s:%d, Failed to read CM status",__FUNCTION__,__LINE__));
-            CcspTraceInfo(("%s:%d, Not taking the WAN down, returning from here",__FUNCTION__,__LINE__));
-            bThreadCreated = false;
-            return NULL;
+            snprintf(cBuf, sizeof(cBuf),"NONOPERATIONAL");
         }
     }
     if (!strcmp(cBuf,"OPERATIONAL"))
