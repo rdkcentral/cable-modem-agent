@@ -470,4 +470,4 @@ DeviceInfo_SetParamStringValue
     }
     /* AnscTraceWarning(("Unsupported parameter '%s'\n", ParamName)); */
     return FALSE;
-}
+} 
