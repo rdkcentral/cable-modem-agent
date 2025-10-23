@@ -39,7 +39,7 @@ protected:
         g_utilMock = new UtilMock();
         g_PtdHandlerMock = new PtdHandlerMock();
         g_fileIOMock = new FileIOMock();
-	g_libnetMock = new LibnetMock();
+    g_libnetMock = new LibnetMock();
     }
 
     void TearDown() override {
@@ -60,7 +60,7 @@ protected:
         delete g_utilMock;
         delete g_PtdHandlerMock;
         delete g_fileIOMock;
-	delete g_libnetMock;
+    delete g_libnetMock;
         g_securewrapperMock = nullptr;
         g_msgpackMock = nullptr;
         g_usertimeMock = nullptr;
@@ -78,7 +78,7 @@ protected:
         g_utilMock = nullptr;
         g_PtdHandlerMock = nullptr;
         g_fileIOMock = nullptr;
-	g_libnetMock = nullptr;
+    g_libnetMock = nullptr;
     }
 };
 
@@ -5834,6 +5834,7 @@ TEST_F(CcspCMAgentXCiscoComCableModemDmlFirstTestFixture, X_CISCO_COM_CableModem
 
     g_pCosaBEManager = (PCOSA_BACKEND_MANAGER_OBJECT)malloc(sizeof(COSA_BACKEND_MANAGER_OBJECT));
     ASSERT_NE(g_pCosaBEManager, nullptr);
+    memset(g_pCosaBEManager, 0, sizeof(COSA_BACKEND_MANAGER_OBJECT));
 
     g_pCosaBEManager->hCM = (PCOSA_DATAMODEL_CABLEMODEM)malloc(sizeof(COSA_DATAMODEL_CABLEMODEM));
     ASSERT_NE(g_pCosaBEManager->hCM, nullptr);
@@ -5865,6 +5866,7 @@ TEST_F(CcspCMAgentXCiscoComCableModemDmlFirstTestFixture, X_CISCO_COM_CableModem
 
     g_pCosaBEManager = (PCOSA_BACKEND_MANAGER_OBJECT)malloc(sizeof(COSA_BACKEND_MANAGER_OBJECT));
     ASSERT_NE(g_pCosaBEManager, nullptr);
+    memset(g_pCosaBEManager, 0, sizeof(COSA_BACKEND_MANAGER_OBJECT));
 
     g_pCosaBEManager->hCM = (PCOSA_DATAMODEL_CABLEMODEM)malloc(sizeof(COSA_DATAMODEL_CABLEMODEM));
     ASSERT_NE(g_pCosaBEManager->hCM, nullptr);
@@ -5896,6 +5898,7 @@ TEST_F(CcspCMAgentXCiscoComCableModemDmlFirstTestFixture, X_CISCO_COM_CableModem
 
     g_pCosaBEManager = (PCOSA_BACKEND_MANAGER_OBJECT)malloc(sizeof(COSA_BACKEND_MANAGER_OBJECT));
     ASSERT_NE(g_pCosaBEManager, nullptr);
+    memset(g_pCosaBEManager, 0, sizeof(COSA_BACKEND_MANAGER_OBJECT));
 
     g_pCosaBEManager->hCM = (PCOSA_DATAMODEL_CABLEMODEM)malloc(sizeof(COSA_DATAMODEL_CABLEMODEM));
     ASSERT_NE(g_pCosaBEManager->hCM, nullptr);
@@ -5931,6 +5934,7 @@ TEST_F(CcspCMAgentXCiscoComCableModemDmlFirstTestFixture, X_CISCO_COM_CableModem
 
     g_pCosaBEManager = (PCOSA_BACKEND_MANAGER_OBJECT)malloc(sizeof(COSA_BACKEND_MANAGER_OBJECT));
     ASSERT_NE(g_pCosaBEManager, nullptr);
+    memset(g_pCosaBEManager, 0, sizeof(COSA_BACKEND_MANAGER_OBJECT));
 
     g_pCosaBEManager->hCM = (PCOSA_DATAMODEL_CABLEMODEM)malloc(sizeof(COSA_DATAMODEL_CABLEMODEM));
     ASSERT_NE(g_pCosaBEManager->hCM, nullptr);
@@ -5966,6 +5970,7 @@ TEST_F(CcspCMAgentXCiscoComCableModemDmlFirstTestFixture, X_CISCO_COM_CableModem
 
     g_pCosaBEManager = (PCOSA_BACKEND_MANAGER_OBJECT)malloc(sizeof(COSA_BACKEND_MANAGER_OBJECT));
     ASSERT_NE(g_pCosaBEManager, nullptr);
+    memset(g_pCosaBEManager, 0, sizeof(COSA_BACKEND_MANAGER_OBJECT));
 
     g_pCosaBEManager->hCM = (PCOSA_DATAMODEL_CABLEMODEM)malloc(sizeof(COSA_DATAMODEL_CABLEMODEM));
     ASSERT_NE(g_pCosaBEManager->hCM, nullptr);
@@ -6005,6 +6010,7 @@ TEST_F(CcspCMAgentXCiscoComCableModemDmlFirstTestFixture, X_CISCO_COM_CableModem
 
     g_pCosaBEManager = (PCOSA_BACKEND_MANAGER_OBJECT)malloc(sizeof(COSA_BACKEND_MANAGER_OBJECT));
     ASSERT_NE(g_pCosaBEManager, nullptr);
+    memset(g_pCosaBEManager, 0, sizeof(COSA_BACKEND_MANAGER_OBJECT));
 
     g_pCosaBEManager->hCM = (PCOSA_DATAMODEL_CABLEMODEM)malloc(sizeof(COSA_DATAMODEL_CABLEMODEM));
     ASSERT_NE(g_pCosaBEManager->hCM, nullptr);
@@ -6044,6 +6050,7 @@ TEST_F(CcspCMAgentXCiscoComCableModemDmlFirstTestFixture, X_CISCO_COM_CableModem
 
     g_pCosaBEManager = (PCOSA_BACKEND_MANAGER_OBJECT)malloc(sizeof(COSA_BACKEND_MANAGER_OBJECT));
     ASSERT_NE(g_pCosaBEManager, nullptr);
+    memset(g_pCosaBEManager, 0, sizeof(COSA_BACKEND_MANAGER_OBJECT));
 
     g_pCosaBEManager->hCM = (PCOSA_DATAMODEL_CABLEMODEM)malloc(sizeof(COSA_DATAMODEL_CABLEMODEM));
     ASSERT_NE(g_pCosaBEManager->hCM, nullptr);
@@ -6090,6 +6097,7 @@ TEST_F(CcspCMAgentXCiscoComCableModemDmlFirstTestFixture, X_CISCO_COM_CableModem
 
     g_pCosaBEManager = (PCOSA_BACKEND_MANAGER_OBJECT)malloc(sizeof(COSA_BACKEND_MANAGER_OBJECT));
     ASSERT_NE(g_pCosaBEManager, nullptr);
+    memset(g_pCosaBEManager, 0, sizeof(COSA_BACKEND_MANAGER_OBJECT));
 
     g_pCosaBEManager->hCM = (PCOSA_DATAMODEL_CABLEMODEM)malloc(sizeof(COSA_DATAMODEL_CABLEMODEM));
     ASSERT_NE(g_pCosaBEManager->hCM, nullptr);
@@ -6136,6 +6144,7 @@ TEST_F(CcspCMAgentXCiscoComCableModemDmlFirstTestFixture, X_CISCO_COM_CableModem
 
     g_pCosaBEManager = (PCOSA_BACKEND_MANAGER_OBJECT)malloc(sizeof(COSA_BACKEND_MANAGER_OBJECT));
     ASSERT_NE(g_pCosaBEManager, nullptr);
+    memset(g_pCosaBEManager, 0, sizeof(COSA_BACKEND_MANAGER_OBJECT));
 
     g_pCosaBEManager->hCM = (PCOSA_DATAMODEL_CABLEMODEM)malloc(sizeof(COSA_DATAMODEL_CABLEMODEM));
     ASSERT_NE(g_pCosaBEManager->hCM, nullptr);
@@ -6202,6 +6211,7 @@ TEST_F(CcspCMAgentXCiscoComCableModemDmlFirstTestFixture, X_CISCO_COM_CableModem
 
     g_pCosaBEManager = (PCOSA_BACKEND_MANAGER_OBJECT)malloc(sizeof(COSA_BACKEND_MANAGER_OBJECT));
     ASSERT_NE(g_pCosaBEManager, nullptr);
+    memset(g_pCosaBEManager, 0, sizeof(COSA_BACKEND_MANAGER_OBJECT));
 
     g_pCosaBEManager->hCM = (PCOSA_DATAMODEL_CABLEMODEM)malloc(sizeof(COSA_DATAMODEL_CABLEMODEM));
     ASSERT_NE(g_pCosaBEManager->hCM, nullptr);
@@ -6251,6 +6261,7 @@ TEST_F(CcspCMAgentXCiscoComCableModemDmlFirstTestFixture, X_CISCO_COM_CableModem
 
     g_pCosaBEManager = (PCOSA_BACKEND_MANAGER_OBJECT)malloc(sizeof(COSA_BACKEND_MANAGER_OBJECT));
     ASSERT_NE(g_pCosaBEManager, nullptr);
+    memset(g_pCosaBEManager, 0, sizeof(COSA_BACKEND_MANAGER_OBJECT));
 
     g_pCosaBEManager->hCM = (PCOSA_DATAMODEL_CABLEMODEM)malloc(sizeof(COSA_DATAMODEL_CABLEMODEM));
     ASSERT_NE(g_pCosaBEManager->hCM, nullptr);
@@ -6309,6 +6320,7 @@ TEST_F(CcspCMAgentXCiscoComCableModemDmlFirstTestFixture, X_CISCO_COM_CableModem
 
     g_pCosaBEManager = (PCOSA_BACKEND_MANAGER_OBJECT)malloc(sizeof(COSA_BACKEND_MANAGER_OBJECT));
     ASSERT_NE(g_pCosaBEManager, nullptr);
+    memset(g_pCosaBEManager, 0, sizeof(COSA_BACKEND_MANAGER_OBJECT));
 
     g_pCosaBEManager->hCM = (PCOSA_DATAMODEL_CABLEMODEM)malloc(sizeof(COSA_DATAMODEL_CABLEMODEM));
     ASSERT_NE(g_pCosaBEManager->hCM, nullptr);
@@ -6391,6 +6403,7 @@ TEST_F(CcspCMAgentXCiscoComCableModemDmlFirstTestFixture, X_CISCO_COM_CableModem
 
     g_pCosaBEManager = (PCOSA_BACKEND_MANAGER_OBJECT)malloc(sizeof(COSA_BACKEND_MANAGER_OBJECT));
     ASSERT_NE(g_pCosaBEManager, nullptr);
+    memset(g_pCosaBEManager, 0, sizeof(COSA_BACKEND_MANAGER_OBJECT));
 
     g_pCosaBEManager->hCM = (PCOSA_DATAMODEL_CABLEMODEM)malloc(sizeof(COSA_DATAMODEL_CABLEMODEM));
     ASSERT_NE(g_pCosaBEManager->hCM, nullptr);
@@ -6424,14 +6437,24 @@ TEST_F(CcspCMAgentXCiscoComCableModemDmlFirstTestFixture, X_CISCO_COM_CableModem
 
     g_pCosaBEManager = (PCOSA_BACKEND_MANAGER_OBJECT)malloc(sizeof(COSA_BACKEND_MANAGER_OBJECT));
     ASSERT_NE(g_pCosaBEManager, nullptr);
+    memset(g_pCosaBEManager, 0, sizeof(COSA_BACKEND_MANAGER_OBJECT));
 
     g_pCosaBEManager->hCM = (PCOSA_DATAMODEL_CABLEMODEM)malloc(sizeof(COSA_DATAMODEL_CABLEMODEM));
     ASSERT_NE(g_pCosaBEManager->hCM, nullptr);
+    memset(g_pCosaBEManager->hCM, 0, sizeof(COSA_DATAMODEL_CABLEMODEM));
 
     PCOSA_DATAMODEL_CABLEMODEM pMyObject = (PCOSA_DATAMODEL_CABLEMODEM)g_pCosaBEManager->hCM;
 
-    PCOSA_DML_CM_WANCFG pWanCfg = &pMyObject->CmWanCfg;
+    // Allocate and initialize all pointer members to prevent SEGFAULTs
+    pMyObject->pCMErrorCodewords = (PCOSA_DML_CMERRORCODEWORDS_FULL)calloc(1, sizeof(COSA_DML_CMERRORCODEWORDS_FULL));
+    pMyObject->pDocsisLog = (PCOSA_DML_DOCSISLOG_FULL)calloc(1, sizeof(COSA_DML_DOCSISLOG_FULL));
+    pMyObject->pDownstreamChannel = (PCOSA_CM_DS_CHANNEL)calloc(1, sizeof(COSA_CM_DS_CHANNEL));
+    pMyObject->pUpstreamChannel = (PCOSA_CM_US_CHANNEL)calloc(1, sizeof(COSA_CM_US_CHANNEL));
+    pMyObject->pCPEList = (PCOSA_DML_CPE_LIST)calloc(1, sizeof(COSA_DML_CPE_LIST));
 
+    PCOSA_DML_CM_WANCFG pWanCfg = &pMyObject->CmWanCfg;
+    // Ensure the test is robust: clear wanInstanceNumber and force MonitorPhyStatusAndNotify to FALSE
+    memset(pWanCfg->wanInstanceNumber, 0, sizeof(pWanCfg->wanInstanceNumber));
     pWanCfg->MonitorPhyStatusAndNotify = FALSE;
 
     EXPECT_CALL(*g_safecLibMock, _strcmp_s_chk(StrEq("MDDIPOverride"),
@@ -6450,6 +6473,12 @@ TEST_F(CcspCMAgentXCiscoComCableModemDmlFirstTestFixture, X_CISCO_COM_CableModem
 
     EXPECT_EQ(X_CISCO_COM_CableModem_SetParamStringValue(NULL, (char*)ParamName, pString), TRUE);
 
+    // Free all allocated pointer members
+    free(pMyObject->pCMErrorCodewords);
+    free(pMyObject->pDocsisLog);
+    free(pMyObject->pDownstreamChannel);
+    free(pMyObject->pUpstreamChannel);
+    free(pMyObject->pCPEList);
     free(g_pCosaBEManager->hCM);
     g_pCosaBEManager->hCM = NULL;
     free(g_pCosaBEManager);
@@ -6478,6 +6507,8 @@ TEST_F(CcspCMAgentXCiscoComCableModemDmlFirstTestFixture, X_CISCO_COM_CableModem
     ASSERT_NE(pMyObject, nullptr) << "pMyObject is NULL!";
 
     PCOSA_DML_CM_WANCFG pWanCfg = &pMyObject->CmWanCfg;
+    // Ensure the test is robust: clear wanInstanceNumber and force MonitorOperStatusAndNotify to FALSE
+    memset(pWanCfg->wanInstanceNumber, 0, sizeof(pWanCfg->wanInstanceNumber));
     pWanCfg->MonitorOperStatusAndNotify = FALSE;
 
     EXPECT_CALL(*g_safecLibMock, _strcmp_s_chk(StrEq("MDDIPOverride"),
@@ -6502,6 +6533,10 @@ TEST_F(CcspCMAgentXCiscoComCableModemDmlFirstTestFixture, X_CISCO_COM_CableModem
         .Times(1)
         .WillOnce(Return(EOK));
 
+    EXPECT_CALL(*g_cmHALMock, docsis_getCMStatus(_))
+        .Times(1)
+        .WillOnce(Return(0));
+
     EXPECT_EQ(X_CISCO_COM_CableModem_SetParamStringValue(nullptr, const_cast<char*>(ParamName), pString), TRUE);
 
     EXPECT_STREQ(pWanCfg->wanInstanceNumber, pString);
@@ -6520,6 +6555,7 @@ TEST_F(CcspCMAgentXCiscoComCableModemDmlFirstTestFixture, X_CISCO_COM_CableModem
 
     g_pCosaBEManager = (PCOSA_BACKEND_MANAGER_OBJECT)malloc(sizeof(COSA_BACKEND_MANAGER_OBJECT));
     ASSERT_NE(g_pCosaBEManager, nullptr);
+    memset(g_pCosaBEManager, 0, sizeof(COSA_BACKEND_MANAGER_OBJECT));
 
     g_pCosaBEManager->hCM = (PCOSA_DATAMODEL_CABLEMODEM)malloc(sizeof(COSA_DATAMODEL_CABLEMODEM));
     ASSERT_NE(g_pCosaBEManager->hCM, nullptr);
@@ -6567,6 +6603,7 @@ TEST_F(CcspCMAgentXCiscoComCableModemDmlFirstTestFixture, X_CISCO_COM_CableModem
 
     g_pCosaBEManager = (PCOSA_BACKEND_MANAGER_OBJECT)malloc(sizeof(COSA_BACKEND_MANAGER_OBJECT));
     ASSERT_NE(g_pCosaBEManager, nullptr);
+    memset(g_pCosaBEManager, 0, sizeof(COSA_BACKEND_MANAGER_OBJECT));
 
     g_pCosaBEManager->hCM = (PCOSA_DATAMODEL_CABLEMODEM)malloc(sizeof(COSA_DATAMODEL_CABLEMODEM));
     ASSERT_NE(g_pCosaBEManager->hCM, nullptr);
@@ -6624,6 +6661,7 @@ TEST_F(CcspCMAgentXCiscoComCableModemDmlFirstTestFixture, X_CISCO_COM_CableModem
 
     g_pCosaBEManager = (PCOSA_BACKEND_MANAGER_OBJECT)malloc(sizeof(COSA_BACKEND_MANAGER_OBJECT));
     ASSERT_NE(g_pCosaBEManager, nullptr);
+    memset(g_pCosaBEManager, 0, sizeof(COSA_BACKEND_MANAGER_OBJECT));
 
     g_pCosaBEManager->hCM = (PCOSA_DATAMODEL_CABLEMODEM)malloc(sizeof(COSA_DATAMODEL_CABLEMODEM));
     ASSERT_NE(g_pCosaBEManager->hCM, nullptr);
@@ -6655,6 +6693,7 @@ TEST_F(CcspCMAgentXCiscoComCableModemDmlFirstTestFixture, X_CISCO_COM_CableModem
 
     g_pCosaBEManager = (PCOSA_BACKEND_MANAGER_OBJECT)malloc(sizeof(COSA_BACKEND_MANAGER_OBJECT));
     ASSERT_NE(g_pCosaBEManager, nullptr);
+    memset(g_pCosaBEManager, 0, sizeof(COSA_BACKEND_MANAGER_OBJECT));
 
     int g_DocsisLog_clean_flg = 0;
 
@@ -6688,6 +6727,7 @@ TEST_F(CcspCMAgentXCiscoComCableModemDmlFirstTestFixture, X_CISCO_COM_CableModem
 
     g_pCosaBEManager = (PCOSA_BACKEND_MANAGER_OBJECT)malloc(sizeof(COSA_BACKEND_MANAGER_OBJECT));
     ASSERT_NE(g_pCosaBEManager, nullptr);
+    memset(g_pCosaBEManager, 0, sizeof(COSA_BACKEND_MANAGER_OBJECT));
 
     g_pCosaBEManager->hCM = (PCOSA_DATAMODEL_CABLEMODEM)malloc(sizeof(COSA_DATAMODEL_CABLEMODEM));
     ASSERT_NE(g_pCosaBEManager->hCM, nullptr);
@@ -6720,6 +6760,7 @@ TEST_F(CcspCMAgentXCiscoComCableModemDmlFirstTestFixture, X_CISCO_COM_CableModem
 {
     g_pCosaBEManager = (PCOSA_BACKEND_MANAGER_OBJECT)malloc(sizeof(COSA_BACKEND_MANAGER_OBJECT));
     ASSERT_NE(g_pCosaBEManager, nullptr);
+    memset(g_pCosaBEManager, 0, sizeof(COSA_BACKEND_MANAGER_OBJECT));
 
     g_pCosaBEManager->hCM = (PCOSA_DATAMODEL_CABLEMODEM)malloc(sizeof(COSA_DATAMODEL_CABLEMODEM));
     ASSERT_NE(g_pCosaBEManager->hCM, nullptr);
@@ -6744,6 +6785,7 @@ TEST_F(CcspCMAgentXCiscoComCableModemDmlFirstTestFixture, X_CISCO_COM_CableModem
 {
     g_pCosaBEManager = (PCOSA_BACKEND_MANAGER_OBJECT)malloc(sizeof(COSA_BACKEND_MANAGER_OBJECT));
     ASSERT_NE(g_pCosaBEManager, nullptr);
+    memset(g_pCosaBEManager, 0, sizeof(COSA_BACKEND_MANAGER_OBJECT));
 
     g_pCosaBEManager->hCM = (PCOSA_DATAMODEL_CABLEMODEM)malloc(sizeof(COSA_DATAMODEL_CABLEMODEM));
     ASSERT_NE(g_pCosaBEManager->hCM, nullptr);

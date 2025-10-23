@@ -763,7 +763,7 @@ TEST_F(CcspCMAgentDeviceInfoDmlTestFixture, DeviceInfo_SetParamBoolValue_Firmwar
         .WillRepeatedly(Return(EOK));
 
     EXPECT_CALL(*g_safecLibMock, _strcat_s_chk(_, _, _, _))
-        .Times(8)
+        .Times(4)
         .WillRepeatedly(Return(EOK));
 
     EXPECT_CALL(*g_cmHALMock, cm_hal_Set_HTTP_Download_Url(_, StrEq("CGA4332COM_7.6s3_DEV_sey.bin")))

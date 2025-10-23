@@ -297,6 +297,17 @@ TEST_F(CcspCMAgentWebconfigApiTestFixture, processcmagentWebConfigRequest_blob_e
     cd = (cmagentdoc_t *) malloc (sizeof(cmagentdoc_t));
     EXPECT_NE(cd, nullptr);
 
+    cd->param = (cmagentparam_t *) malloc(sizeof(cmagentparam_t));
+    EXPECT_NE(cd->param, nullptr);
+
+    cd->subdoc_name = (char *) malloc(sizeof(char) * 16);
+    EXPECT_NE(cd->subdoc_name, nullptr);
+
+    cd->version = 1;
+    cd->transaction_id = 1234;
+    cd->param->enable = true;
+    strncpy(cd->subdoc_name, "test_subdoc", 16);
+
     memset(execRetVal, 0, sizeof(Err));
 
     execRetVal->ErrorCode = BLOB_EXEC_SUCCESS;
