@@ -2253,13 +2253,24 @@ static void * DocsisLinkMonitorThread(void *pVoid)
             {
                 CcspTraceInfo(("%s:%d, Failed to read CM status",__FUNCTION__,__LINE__));
             }
+
+            /* Determine under lock whether we need to check ping-status, but do the potentially
+               blocking sysevent_get outside the mutex to avoid sleeping while holding the lock. */
+            bool need_check_ping = false;
             pthread_mutex_lock(&gWanDownMutex);
             if ((!strcmp(cBuf,"OPERATIONAL")) && (STATUS_UP != eLinkStatus))
             {
                 CcspTraceInfo(("%s %d - CM status is Still:%s\n", __FUNCTION__, __LINE__,cBuf));
-                memset(cBuf,0,sizeof(cBuf));
-                sysevent_get(sysevent_fd_gs, sysevent_token_gs, "ping-status", cBuf, sizeof(cBuf));
-                if (strcmp(cBuf,"missed") == 0)
+                need_check_ping = true;
+            }
+            bThreadCreated = false;
+            pthread_mutex_unlock(&gWanDownMutex);
+
+            if (need_check_ping)
+            {
+                char pingBuf[32] = {0};
+                sysevent_get(sysevent_fd_gs, sysevent_token_gs, "ping-status", pingBuf, sizeof(pingBuf));
+                if (strcmp(pingBuf,"missed") == 0)
                 {
                     CcspTraceInfo(("%s %d - ping miss event is set, setting wan down\n", __FUNCTION__, __LINE__));
                     bIsWanStatusSetDown = true;
@@ -2270,8 +2281,7 @@ static void * DocsisLinkMonitorThread(void *pVoid)
                     CcspTraceInfo(("%s %d - ping miss event is NOT set, Not setting wan down\n", __FUNCTION__, __LINE__));
                 }
             }
-            bThreadCreated = false;
-            pthread_mutex_unlock(&gWanDownMutex);
+
             return NULL;
         }
     }
@@ -2302,7 +2312,10 @@ static void GWP_act_DocsisLinkDown_callback_2()
 
     pthread_mutex_init(&lock, NULL); // Initialize the mutex
     CcspTraceInfo(("%s:%d, Entry, mutex added \n", __FUNCTION__, __LINE__));
+    pthread_mutex_lock(&gWanDownMutex);
     eLinkStatus = STATUS_DOWN;
+    pthread_mutex_unlock(&gWanDownMutex);
+
 
     if ((true == bLinkDownSimulation) && (access("/tmp/linkDownFlagSet", F_OK) != 0))
     {
