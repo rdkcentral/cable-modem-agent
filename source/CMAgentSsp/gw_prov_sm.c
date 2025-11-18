@@ -2253,46 +2253,37 @@ static void * DocsisLinkMonitorThread(void *pVoid)
             {
                 CcspTraceInfo(("%s:%d, Failed to read CM status",__FUNCTION__,__LINE__));
             }
-
-            /* Determine under lock whether we need to check ping-status, but do the potentially
-               blocking sysevent_get outside the mutex to avoid sleeping while holding the lock. */
-            bool need_check_ping = false;
-            pthread_mutex_lock(&gWanDownMutex);
             if ((!strcmp(cBuf,"OPERATIONAL")) && (STATUS_UP != eLinkStatus))
             {
                 CcspTraceInfo(("%s %d - CM status is Still:%s\n", __FUNCTION__, __LINE__,cBuf));
-                need_check_ping = true;
-            }
-            bThreadCreated = false;
-            pthread_mutex_unlock(&gWanDownMutex);
-
-            if (need_check_ping)
-            {
-                char pingBuf[32] = {0};
-                sysevent_get(sysevent_fd_gs, sysevent_token_gs, "ping-status", pingBuf, sizeof(pingBuf));
-                if (strcmp(pingBuf,"missed") == 0)
+                memset(cBuf,0,sizeof(cBuf));
+                sysevent_get(sysevent_fd_gs, sysevent_token_gs, "ping-status", cBuf, sizeof(cBuf));
+                if (strcmp(cBuf,"missed") == 0)
                 {
                     CcspTraceInfo(("%s %d - ping miss event is set, setting wan down\n", __FUNCTION__, __LINE__));
                     bIsWanStatusSetDown = true;
+                    pthread_mutex_lock(&gWanDownMutex);
                     setWanStatusDown ();
+                    pthread_mutex_unlock(&gWanDownMutex);
                 }
                 else
                 {
                     CcspTraceInfo(("%s %d - ping miss event is NOT set, Not setting wan down\n", __FUNCTION__, __LINE__));
                 }
             }
-
+            bThreadCreated = false;
             return NULL;
         }
     }
-    pthread_mutex_lock(&gWanDownMutex);
     if((STATUS_DOWN == eLinkStatus) && (false == bIsWanStatusSetDown))
     {
         CcspTraceInfo(("%s %d - Setting the WAN status down\n", __FUNCTION__, __LINE__));
         bIsWanStatusSetDown = true;
+        pthread_mutex_lock(&gWanDownMutex);
         setWanStatusDown ();
+        pthread_mutex_unlock(&gWanDownMutex);
     }
-    pthread_mutex_unlock(&gWanDownMutex);
+    
     bThreadCreated = false;
     return NULL;
 }
