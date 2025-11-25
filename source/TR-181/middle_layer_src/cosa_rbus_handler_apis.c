@@ -767,12 +767,13 @@ rbusError_t setLLDEnableBoolHandler(rbusHandle_t handleLld, rbusProperty_t prope
         if(rbusValue_GetType(value) == RBUS_BOOLEAN)
         {
             rc = Rbus_LLDEnabled_SetParamBoolValue(NULL,param,rbusValue_GetBoolean(value));
-            free(param);
             if(!rc)
             {
                 CcspTraceWarning((" setting of %s failed\n",param));
+                free(param);
                 return RBUS_ERROR_BUS_ERROR;
             }
+            free(param);
             return RBUS_ERROR_SUCCESS;
         }
         else
