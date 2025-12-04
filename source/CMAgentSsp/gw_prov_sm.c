@@ -2253,7 +2253,6 @@ static void * DocsisLinkMonitorThread(void *pVoid)
             {
                 CcspTraceInfo(("%s:%d, Failed to read CM status",__FUNCTION__,__LINE__));
             }
-            pthread_mutex_lock(&gWanDownMutex);
             if ((!strcmp(cBuf,"OPERATIONAL")) && (STATUS_UP != eLinkStatus))
             {
                 CcspTraceInfo(("%s %d - CM status is Still:%s\n", __FUNCTION__, __LINE__,cBuf));
@@ -2263,7 +2262,9 @@ static void * DocsisLinkMonitorThread(void *pVoid)
                 {
                     CcspTraceInfo(("%s %d - ping miss event is set, setting wan down\n", __FUNCTION__, __LINE__));
                     bIsWanStatusSetDown = true;
+                    pthread_mutex_lock(&gWanDownMutex);
                     setWanStatusDown ();
+                    pthread_mutex_unlock(&gWanDownMutex);
                 }
                 else
                 {
@@ -2271,18 +2272,18 @@ static void * DocsisLinkMonitorThread(void *pVoid)
                 }
             }
             bThreadCreated = false;
-            pthread_mutex_unlock(&gWanDownMutex);
             return NULL;
         }
     }
-    pthread_mutex_lock(&gWanDownMutex);
     if((STATUS_DOWN == eLinkStatus) && (false == bIsWanStatusSetDown))
     {
         CcspTraceInfo(("%s %d - Setting the WAN status down\n", __FUNCTION__, __LINE__));
         bIsWanStatusSetDown = true;
+        pthread_mutex_lock(&gWanDownMutex);
         setWanStatusDown ();
+        pthread_mutex_unlock(&gWanDownMutex);
     }
-    pthread_mutex_unlock(&gWanDownMutex);
+    
     bThreadCreated = false;
     return NULL;
 }
@@ -2302,7 +2303,10 @@ static void GWP_act_DocsisLinkDown_callback_2()
 
     pthread_mutex_init(&lock, NULL); // Initialize the mutex
     CcspTraceInfo(("%s:%d, Entry, mutex added \n", __FUNCTION__, __LINE__));
+    pthread_mutex_lock(&gWanDownMutex);
     eLinkStatus = STATUS_DOWN;
+    pthread_mutex_unlock(&gWanDownMutex);
+
 
     if ((true == bLinkDownSimulation) && (access("/tmp/linkDownFlagSet", F_OK) != 0))
     {
