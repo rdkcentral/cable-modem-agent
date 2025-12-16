@@ -712,6 +712,7 @@ X_CISCO_COM_CableModem_GetParamStringValue
         if (CosaDmlCMGetDHCPInfo(NULL, &Info) != ANSC_STATUS_SUCCESS)
             return -1;
 
+        CcspTraceInfo("[DEBUG] %s: BootFileName: %s, size: %zu\n", __FUNCTION__, Info.BootFileName, sizeof(Info.BootFileName));
         rc = strcpy_s(pValue,*pUlSize,Info.BootFileName);
         if(rc != EOK)
         {
@@ -1144,6 +1145,7 @@ X_CISCO_COM_CableModem_GetParamStringValue
         if (CosaDmlCMGetIPv6DHCPInfo(NULL, &IPV6Info) != ANSC_STATUS_SUCCESS)
             return -1;
 
+        CcspTraceInfo("[DEBUG] %s: IPv6BootFileName: %s, size: %zu\n", __FUNCTION__, IPV6Info.IPv6BootFileName, sizeof(IPV6Info.IPv6BootFileName));
         rc = strcpy_s(pValue,*pUlSize,IPV6Info.IPv6BootFileName);
         if(rc != EOK)
         {
