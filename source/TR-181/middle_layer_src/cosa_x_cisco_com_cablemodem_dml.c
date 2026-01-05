@@ -712,7 +712,6 @@ X_CISCO_COM_CableModem_GetParamStringValue
         if (CosaDmlCMGetDHCPInfo(NULL, &Info) != ANSC_STATUS_SUCCESS)
             return -1;
 
-        CcspTraceInfo(("[DEBUG] %s: BootFileName: %s, size: %zu\n", __FUNCTION__, Info.BootFileName, sizeof(Info.BootFileName)));
         rc = strcpy_s(pValue,*pUlSize,Info.BootFileName);
         if(rc != EOK)
         {
