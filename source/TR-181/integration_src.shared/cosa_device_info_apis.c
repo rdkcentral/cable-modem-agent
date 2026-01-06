@@ -71,6 +71,7 @@
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 #include "cosa_device_info_apis.h"
 #include "cm_hal.h"
 #include "cosa_device_info_internal.h"
