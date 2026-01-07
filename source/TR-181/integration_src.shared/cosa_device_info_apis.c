@@ -72,6 +72,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <errno.h>
 #include "cosa_device_info_apis.h"
 #include "cm_hal.h"
 #include "cosa_device_info_internal.h"
@@ -434,7 +435,7 @@ int can_proceed_fw_download(void)
     {
         FILE *fp = fopen("/proc/meminfo", "r");
         if (!fp) {
-            CcspTraceError(("[FWCHK] Cannot read /proc/meminfo\n"));
+            CcspTraceError(("[FWCHK] fopen(/proc/meminfo) failed: errno=%d (%s)\n",errno, strerror(errno)));
             return 0;
         }
 
