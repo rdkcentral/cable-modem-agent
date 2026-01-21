@@ -29,7 +29,7 @@ libCcspCMAgent_integration_src_shared_la_CPPFLAGS = \
     -I$(top_srcdir)/source/Custom
 
 libCcspCMAgent_integration_src_shared_la_SOURCES = cosa_x_cisco_com_cablemodem_apis.c cosa_device_info_apis.c cosa_x_rdkcentral_com_cablemodem_apis.c
-libCcspCMAgent_integration_src_shared_la_LDFLAGS = -lccsp_common -lcm_mgnt -lsysevent -lsecure_wrapper
+libCcspCMAgent_integration_src_shared_la_LDFLAGS = -lccsp_common -lcm_mgnt -lsysevent -lsecure_wrapper -lfw_download_chk
 if CORE_NET_LIB_FEATURE_SUPPORT
 libCcspCMAgent_integration_src_shared_la_LDFLAGS += -lnet
 endif
