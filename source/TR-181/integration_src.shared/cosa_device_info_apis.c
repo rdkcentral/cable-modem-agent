@@ -77,7 +77,7 @@
 #include "safec_lib_common.h"
 #include <syscfg/syscfg.h>
 #include "secure_wrapper.h"
-#include <ccsp/fw_download_check.h>
+#include "fw_download_check.h"
 
 #define CM_HTTPURL_LEN 512
 #define VALID_fW_LEN 128
