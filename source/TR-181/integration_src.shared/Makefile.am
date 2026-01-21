@@ -26,8 +26,7 @@ libCcspCMAgent_integration_src_shared_la_CPPFLAGS = \
     -I$(top_srcdir)/source/TR-181/board_sbapi \
     -I$(top_srcdir)/source/TR-181/middle_layer_src \
     -I$(top_srcdir)/source/TR-181/include \
-    -I$(top_srcdir)/source/Custom \
-    -I${includedir}/ccsp
+    -I$(top_srcdir)/source/Custom
 
 libCcspCMAgent_integration_src_shared_la_SOURCES = cosa_x_cisco_com_cablemodem_apis.c cosa_device_info_apis.c cosa_x_rdkcentral_com_cablemodem_apis.c
 libCcspCMAgent_integration_src_shared_la_LDFLAGS = -lccsp_common -lcm_mgnt -lsysevent -lsecure_wrapper -lfw_download_chk
