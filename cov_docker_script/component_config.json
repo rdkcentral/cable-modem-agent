@@ -52,16 +52,8 @@
       },
       {
         "name": "rdkb-halif-vlan",
-        "repo": "https://github.com/rdkcentral/rdkb-halif-cm.git",
-        "branch": "main",
-        "header_paths": [
-          { "source": "include", "destination": "$HOME/usr/include" }
-        ]
-      },
-      {
-        "name": "rdkb-halif-dhcp",
         "repo": "https://github.com/rdkcentral/rdkb-halif-vlan.git",
-	"branch": "main",
+        "branch": "main",
         "header_paths": [
           { "source": "include", "destination": "$HOME/usr/include" }
         ]

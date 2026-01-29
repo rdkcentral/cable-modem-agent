@@ -7,8 +7,8 @@ on:
     branches: [ main, 'sprint/**', 'release/**', topic/RDK*, develop ]
 
 jobs:
-  build-moca-agent-on-pr:
-    name: Build CMAgent component in github rdkcentral
+  build-cable-modem-agent-on-pr:
+    name: Build Cable Modem Agent component in github rdkcentral
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/rdkcentral/docker-rdk-ci:latest
