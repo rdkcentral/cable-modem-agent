@@ -7,44 +7,12 @@
     "_comment": "External repositories needed by this component",
     "repos": [
       {
-        "name": "rbus",
-        "repo": "https://github.com/rdkcentral/rbus.git",
-        "branch": "v2.7.0",
-        "header_paths": [
-          { "source": "include", "destination": "$HOME/usr/include/rdkb/rbus" },
-          { "source": "src/rbus", "destination": "$HOME/usr/include/rdkb/rbus" },
-          { "source": "src/core", "destination": "$HOME/usr/include/rdkb/rbus" },
-          { "source": "src/rtmessage", "destination": "$HOME/usr/include/rdkb/rtmessage" }
-        ],
-        "build": {
-          "type": "cmake",
-          "build_dir": "build",
-          "cmake_flags": "-DCMAKE_INSTALL_PREFIX=$HOME/usr -DCMAKE_PREFIX_PATH=/usr -DBUILD_FOR_DESKTOP=ON -DCMAKE_BUILD_TYPE=Debug"
-        }
-      },
-      {
         "name": "safec",
         "repo": "https://github.com/rurban/safeclib.git",
         "branch": "master",
         "header_paths": [
           { "source": "include", "destination": "$HOME/usr/include/rdkb" }
         ]
-      },
-      {
-        "name": "trower-base64",
-        "repo": "https://github.com/xmidt-org/trower-base64.git",
-        "branch": "v1.2.7",
-        "header_paths": [
-          { "source": "include/trower-base64", "destination": "$HOME/usr/include/rdkb" },
-          { "source": "include/trower-base64", "destination": "$HOME/usr/include/rdkb/trower-base64" }
-        ],
-        "build": {
-          "type": "commands",
-          "commands": [
-            "meson setup build --prefix=$HOME/usr",
-            "meson compile -C build"
-          ]
-        }
       },
       {
         "name": "Utopia",
@@ -157,11 +125,9 @@
     "build": {
     "type": "autotools",
     "build_dir": "build",
+    "configure_options_file": "cov_docker_script/configure_options.conf",
     "configure_options": [
-        "CPPFLAGS=-I$HOME/usr/include -I$HOME/usr/include/rdkb -I/usr/include -I/usr/include/dbus-1.0 -I/usr/lib/x86_64-linux-gnu/dbus-1.0/include -I$HOME/usr/include/rdkb/rtmessage -I$HOME/usr/include/rdkb/MoCASsp",
-        "CFLAGS=-DSAFEC_DUMMY_API -D_ANSC_USE_OPENSSL_ -D_NO_PKI_KB5_SUPPORT -DENABLE_LLD_SUPPORT",
-	"SRC_DIRS=$HOME/build/moca-agent/source/MoCASsp",
-        "LDFLAGS=-L$HOME/usr/lib -L$HOME/usr/lib/ -L$HOME/usr/local/lib -L/usr/lib -L/usr/lib/x86_64-linux-gnu -L$HOME/usr/lib/x86_64-linux-gnu -L$HOME/usr/include/rdkb/MoCASsp -L$HOME/build/moca-agent/source/MoCASsp -ldbus-1 -lccsp_common -Wl,--allow-shlib-undefined -Wl,--unresolved-symbols=ignore-all"
+	"SRC_DIRS=$HOME/build/cable-model-agent/source/CMAgentSsp/"
     ]
     }
   }
