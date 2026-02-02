@@ -492,7 +492,7 @@ ANSC_STATUS CosaDmlDIDownloadNow(ANSC_HANDLE hContext)
 
 	}   */
     
-    if(can_proceed_fw_download() == 0){
+    if(can_proceed_fw_download() == FW_DWNLD_MEMCHK_NOT_ENOUGH_MEM){
         CcspTraceError(("CosaDmlDIDownloadNow : Not enough memory to proceed firmware download\n"));
         return ANSC_STATUS_FAILURE;
     }
