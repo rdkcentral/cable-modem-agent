@@ -75,20 +75,20 @@
         ]
       },
       {
-	"name": "hal-cm-generic",
-        "repo": "https://code.rdkcentral.com/r/rdkb/components/opensource/ccsp/hal" ,
+        "name": "hal-cm-generic",
+        "repo": "https://code.rdkcentral.com/r/rdkb/components/opensource/ccsp/hal.git",
         "branch": "rdk-next",
-	"repo_dir": "hal-cm-generic/source/cm",
-	"include_path": "$HOME/usr/include/rdkb/",
+        "repo_dir": "hal-cm-generic/source/cm",
+        "include_path": "$HOME/usr/include/rdkb/",
         "lib_output_path": "$HOME/usr/local/lib",
         "build": {
         "type": "commands",
         "commands": [
-	    "echo \"${PWD}\"",
-	    "cd source/cm",
-	    "autoreconf -i",
+            "echo \"${PWD}\"",
+            "cd source/cm",
+            "autoreconf -i",
             "./configure",
-	    "make CFLAGS=\"-Os -pipe -g -feliminate-unused-debug-types -I${HOME}/usr/include/rdkb -I${HOME}/build/rdkb-halif-cm/include\" LDFLAGS=\"-Wl,-O1 -Wl,--hash-style=gnu -Wl,--as-needed\""
+            "make CFLAGS=\"-Os -pipe -g -feliminate-unused-debug-types -I${HOME}/usr/include/rdkb -I${HOME}/build/rdkb-halif-cm/include\" LDFLAGS=\"-Wl,-O1 -Wl,--hash-style=gnu -Wl,--as-needed\""
          ]
         }
       }
@@ -119,7 +119,7 @@
     "build_dir": "build",
     "configure_options_file": "cov_docker_script/configure_options.conf",
     "configure_options": [
-	"SRC_DIRS=$HOME/build/cable-model-agent/source/CMAgentSsp/"
+        "SRC_DIRS=$HOME/build/cable-modem-agent/source/CMAgentSsp/"
     ]
     }
   }
