@@ -85,6 +85,25 @@
 #include "rdk_debug.h"
 #endif
 
+/* ===== OneStack Feature Support Patch ===== */
+
+#ifdef _ONESTACK_PRODUCT_REQ_
+
+#ifndef FEATURE_IPV6_DELEGATION
+#define FEATURE_IPV6_DELEGATION  1
+#endif
+
+/* Dummy runtime feature check — always enabled */
+static inline bool isFeatureSupportedInCurrentMode(int feature)
+{
+    (void)feature;
+    return true;
+}
+
+#endif /* _ONESTACK_PRODUCT_REQ_ */
+
+/* ========================================== */
+
 #include <mqueue.h>
 //core net lib
 #include <stdint.h>
@@ -329,7 +348,7 @@ static bool GW_SetTr069PaMibString(unsigned char **cur, unsigned char sub_oid, u
 static void check_lan_wan_ready();
 //static TlvParseCallbackStatus_e gotEnableType(unsigned char type, unsigned short length, const unsigned char *value);
 
-#ifdef CISCO_CONFIG_DHCPV6_PREFIX_DELEGATION
+#if defined(CISCO_CONFIG_DHCPV6_PREFIX_DELEGATION) || defined(_ONESTACK_PRODUCT_REQ_)
 static TlvParseCallbackStatusExtIf_e GW_setTopologyMode(unsigned char type, unsigned short length, const unsigned char *value);
 #endif
 
@@ -1016,9 +1035,16 @@ static STATUS GW_UpdateTr069Cfg(void)
 #endif
 #endif
 
-#ifdef CISCO_CONFIG_DHCPV6_PREFIX_DELEGATION
+#if defined(CISCO_CONFIG_DHCPV6_PREFIX_DELEGATION) || defined(_ONESTACK_PRODUCT_REQ_)
 static TlvParseCallbackStatusExtIf_e GW_setTopologyMode(unsigned char type, unsigned short length, const unsigned char *value)
 {
+#ifdef _ONESTACK_PRODUCT_REQ_
+    if (!isFeatureSupportedInCurrentMode(FEATURE_IPV6_DELEGATION))
+    {
+        /* PD feature disabled — ignore TLV */
+        return TLV_PARSE_CALLBACK_OK_EXTIF;
+    }
+#endif
     unsigned char tpMode = *value;
     TlvParseCallbackStatusExtIf_e st = TLV_PARSE_CALLBACK_OK_EXTIF;
 
@@ -2162,8 +2188,13 @@ static void setWanStatusDown(void)
        {
            CcspTraceError(("Removed file"));
        }
-   #ifdef CISCO_CONFIG_DHCPV6_PREFIX_DELEGATION
+    #if defined(CISCO_CONFIG_DHCPV6_PREFIX_DELEGATION) || defined(_ONESTACK_PRODUCT_REQ_)
+    #if defined(_ONESTACK_PRODUCT_REQ_)
+    if (isFeatureSupportedInCurrentMode(FEATURE_IPV6_DELEGATION))
+    #endif
+    {
        v_secure_system("sysevent set dhcpv6_client-stop");
+    }
    #endif
     }
 
@@ -2545,8 +2576,13 @@ static int GWP_act_DocsisLinkUp_callback()
 #else
     if (eRouterMode != DOCESAFE_ENABLE_DISABLE_extIf /*&& bridge_mode == 0*/) // mipieper - pseduo bridge support
     {
-    #ifdef CISCO_CONFIG_DHCPV6_PREFIX_DELEGATION
+    #if defined(CISCO_CONFIG_DHCPV6_PREFIX_DELEGATION) || defined(_ONESTACK_PRODUCT_REQ_)
+    #if defined(_ONESTACK_PRODUCT_REQ_)
+    if (isFeatureSupportedInCurrentMode(FEATURE_IPV6_DELEGATION))
+    #endif
+    {
 	sysevent_set(sysevent_fd_gs, sysevent_token_gs, "dhcpv6_client-start", "", 0);
+    }
     #endif
     }
     if (!logged_docsis_reg_complete_uptime)
@@ -3898,9 +3934,14 @@ void RegisterDocsisCallback()
        obj->pDocsis_GetRATransInterval = (fpDocsisRATransInterval)docsis_GetRATransInterval_callback;
 #endif
        obj->pGW_Tr069PaSubTLVParse = GW_Tr069PaSubTLVParse;
-#ifdef CISCO_CONFIG_DHCPV6_PREFIX_DELEGATION
+#if defined(CISCO_CONFIG_DHCPV6_PREFIX_DELEGATION) || defined(_ONESTACK_PRODUCT_REQ_)
+    #if defined(_ONESTACK_PRODUCT_REQ_)
+    if (isFeatureSupportedInCurrentMode(FEATURE_IPV6_DELEGATION))
+    #endif
+    {
 	void* pGW_setTopologyMode = GW_setTopologyMode;
         obj->pGW_SetTopologyMode = (fpGW_SetTopologyMode)pGW_setTopologyMode;
+    }
 #endif
 #if defined (WAN_FAILOVER_SUPPORTED)
         if(RemoveIfFileExists(DOCSISLINKDOWN_TESTFILE)==0)// file is removed then link up during crash 
