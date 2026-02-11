@@ -51,6 +51,7 @@
 //#include <docsis_ext_interface.h>
 #include "safec_lib_common.h"
 #include "syscfg/syscfg.h"
+#include "telemetry_busmessage_sender.h"
 #include <sys/stat.h>
 
 #define DEBUG_INI_NAME "/etc/debug.ini"
@@ -960,6 +961,7 @@ int main(int argc, char *argv[])
     CcspTraceInfo(("pthread create docsis registration\n"));
     pthread_create(&docsisclbk_tid, NULL, GWP_docsisregistration_threadfunc, NULL);
 #endif
+	t2_init("CcspCMAgent");
     cmd_dispatch('e');
     // printf("Calling Docsis\n");
 
