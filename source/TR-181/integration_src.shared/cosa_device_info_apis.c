@@ -77,6 +77,7 @@
 #include "safec_lib_common.h"
 #include <syscfg/syscfg.h>
 #include "secure_wrapper.h"
+#include "fw_download_check.h"
 
 #define CM_HTTPURL_LEN 512
 #define VALID_fW_LEN 128
@@ -379,7 +380,6 @@ ANSC_STATUS CosaDmlDIGetRfSignalStatus(BOOLEAN *pRfSignalStatus) {
 }
 #endif
 
-
 ANSC_STATUS CosaDmlDIDownloadNow(ANSC_HANDLE hContext)
 {
 	PCOSA_DATAMODEL_DEVICEINFO     pMyObject = (PCOSA_DATAMODEL_DEVICEINFO)hContext;
@@ -491,6 +491,12 @@ ANSC_STATUS CosaDmlDIDownloadNow(ANSC_HANDLE hContext)
 		}	
 
 	}   */
+    
+    if(can_proceed_fw_download() == FW_DWNLD_MEMCHK_NOT_ENOUGH_MEM){
+        CcspTraceError(("CosaDmlDIDownloadNow : Not enough memory to proceed firmware download\n"));
+        return ANSC_STATUS_FAILURE;
+    }
+
 	pthread_t FWDL_Thread;
 	res = pthread_create(&FWDL_Thread, NULL, FWDL_ThreadFunc, "FWDL_ThreadFunc"); 
 	if(res != 0)
