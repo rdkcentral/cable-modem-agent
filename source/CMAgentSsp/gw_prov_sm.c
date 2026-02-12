@@ -85,7 +85,9 @@
 #include "rdk_debug.h"
 #endif
 
-
+#ifdef _ONESTACK_PRODUCT_REQ_
+#include <rdkb_feature_mode_gate.h>
+#endif
 #include <mqueue.h>
 //core net lib
 #include <stdint.h>
