@@ -826,6 +826,25 @@ static bool drop_root()
 }
 #endif
 
+char* getPtr()
+{
+   return NULL;
+}
+int coverity_test_func()
+{
+   int tempVar;
+   int new = tempVar + 1;
+
+   int arr[3];
+   arr[5] = 100;
+
+   char* p = getPtr();
+   strcpy(p,"test");
+
+  char *ptr = (char*)malloc(5);
+  strcpy(ptr, "test");   
+}
+
 int main(int argc, char *argv[])
 {
     int                             cmdChar            = 0;
@@ -1044,6 +1063,7 @@ int main(int argc, char *argv[])
     {
         CCSP_Message_Bus_Exit(pBusHandle);
     }
+    coverity_test_func(); //DUMMY Coverity test function Donot merge
     return 0;
 }
 /** @} */  //END OF GROUP CM_AGENT_APIS
