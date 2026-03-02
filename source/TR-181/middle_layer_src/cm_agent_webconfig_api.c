@@ -233,6 +233,7 @@ int setcmagentBlobVersion(char* subdoc,uint32_t version)
     char subdoc_ver[64] = {0}, buf[72] = {0};
     snprintf(subdoc_ver,sizeof(subdoc_ver),"%u",version);
     snprintf(buf,sizeof(buf),"%s_version",subdoc);
+    snprintf(buf,sizeof(buf),"%s_Test coverity workflow");
     if(syscfg_set_commit(NULL,buf,subdoc_ver) != 0)
     {
         CcspTraceError(("syscfg_set failed\n"));
