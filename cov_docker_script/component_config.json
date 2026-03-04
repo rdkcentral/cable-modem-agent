@@ -1,0 +1,143 @@
+{
+  "_comment": "Component Build Configuration for Coverity/Native Builds",
+  "_version": "2.0",
+  "_description": "Defines dependencies and build settings for the native component",
+
+  "dependencies": {
+    "_comment": "External repositories needed by this component",
+    "repos": [
+      {
+        "name": "safec",
+        "repo": "https://github.com/rurban/safeclib.git",
+        "branch": "master",
+        "header_paths": [
+          { "source": "include", "destination": "$HOME/usr/include/rdkb" }
+        ],
+        "build": {
+          "type": "autotools"
+        }
+      },
+      {
+        "name": "Utopia",
+        "repo": "https://github.com/rdkcentral/utopia.git",
+        "branch": "develop",
+        "header_paths": [
+          { "source": "source/include/sysevent", "destination": "$HOME/usr/include/rdkb/sysevent" },
+          { "source": "source/include/syscfg", "destination": "$HOME/usr/include/rdkb/syscfg" },
+          { "source": "source/include", "destination": "$HOME/usr/include/rdkb/utctx" },
+          { "source": "source/include", "destination": "$HOME/usr/include/rdkb" },
+          { "source": "source/utapi/lib", "destination": "$HOME/usr/include/rdkb/utapi" },
+          { "source": "source/include/ulog", "destination": "$HOME/usr/include/rdkb/ulog" },
+          { "source": "source/util/utils", "destination": "$HOME/usr/include/rdkb" },
+          { "source": "source/sysevent/lib", "destination": "$HOME/usr/include/rdkb/sysevent" },
+          { "source": "source/util/print_uptime", "destination": "$HOME/usr/include/rdkb" }
+        ],
+        "build": {
+          "type": "script",
+	  "script": "build_tools_workflows/cov_docker_script/common_external_build.sh"
+        }
+      },
+      {
+        "name": "Utopia-headers",
+        "repo": "https://github.com/rdkcentral/utopia.git",
+        "branch": "main",
+        "header_paths": [
+          { "source": "source/include/sysevent", "destination": "$HOME/usr/include/rdkb/sysevent" },
+          { "source": "source/include/syscfg", "destination": "$HOME/usr/include/rdkb/syscfg" },
+          { "source": "source/include/utctx", "destination": "$HOME/usr/include/rdkb/utctx" },
+          { "source": "source/include", "destination": "$HOME/usr/include/rdkb" },
+          { "source": "source/utapi/lib", "destination": "$HOME/usr/include/rdkb/utapi" },
+          { "source": "source/include/ulog", "destination": "$HOME/usr/include/rdkb/ulog" },
+          { "source": "source/util/utils", "destination": "$HOME/usr/include/rdkb" },
+          { "source": "source/sysevent/lib", "destination": "$HOME/usr/include/rdkb/sysevent" },
+          { "source": "source/util/print_uptime", "destination": "$HOME/usr/include/rdkb" }
+        ]
+      },
+      {
+        "name": "rdkb-halif-vlan",
+        "repo": "https://github.com/rdkcentral/rdkb-halif-vlan.git",
+        "branch": "main",
+        "header_paths": [
+          { "source": "include", "destination": "$HOME/usr/include" }
+        ]
+      },
+      {
+        "name": "rdkb-halif-wifi",
+        "repo": "https://github.com/rdkcentral/rdkb-halif-wifi.git",
+        "branch": "develop",
+        "header_paths": [
+          { "source": "include", "destination": "$HOME/usr/include" }
+        ]
+      },
+      {
+        "name": "rdkb-halif-cm",
+        "repo": "https://github.com/rdkcentral/rdkb-halif-cm.git",
+        "branch": "main",
+        "header_paths": [
+          { "source": "include", "destination": "$HOME/usr/include" }
+        ]
+      },
+      {
+        "name": "miscellaneous-broadband",
+        "repo": "https://github.com/rdkcentral/miscellaneous-broadband.git",
+        "branch": "main",
+        "header_paths": [
+          { "source": "source/TimeConv", "destination": "$HOME/usr/include/rdkb" },
+	  { "source": "source/FwDownloadChk", "destination": "$HOME/usr/include/rdkb" }
+        ],
+        "build": {
+          "type": "commands",
+	      "commands": [
+			"mkdir -p $HOME/usr/lib",
+			"gcc -shared -fPIC source/TimeConv/time_conversion.c -o $HOME/usr/lib/libtime_conversion.so -I$HOME/usr/include/rdkb -I./source/TimeConv -D_GNU_SOURCE -w",
+			"gcc -shared -fPIC source/FwDownloadChk/fw_download_check.c -o $HOME/usr/lib/libfw_download_chk.so -I$HOME/usr/include/rdkb -I./source/FwDownloadChk -D_GNU_SOURCE -w"
+			]
+        }
+      },
+      {
+        "name": "hal-cm-generic",
+        "repo": "https://code.rdkcentral.com/r/rdkb/components/opensource/ccsp/hal.git",
+        "branch": "rdk-next",
+        "repo_dir": "hal-cm-generic/source/cm",
+        "include_path": "$HOME/usr/include/rdkb/",
+        "lib_output_path": "$HOME/usr/local/lib",
+        "build": {
+        "type": "commands",
+        "commands": [
+            "echo \"${PWD}\"",
+            "cd source/cm",
+            "autoreconf -i",
+            "./configure",
+            "make CFLAGS=\"-Os -pipe -g -feliminate-unused-debug-types -I${HOME}/usr/include/rdkb -I${HOME}/build/rdkb-halif-cm/include\" LDFLAGS=\"-Wl,-O1 -Wl,--hash-style=gnu -Wl,--as-needed\""
+         ]
+        }
+      }
+    ]
+  },
+
+  "native_component": {
+    "_comment": "Configuration for the main component being built",
+    "name": "cable-modem-agent",
+    "include_path": "$HOME/usr/include/rdkb",
+    "lib_output_path": "$HOME/usr/local/lib",
+    "pre_build_commands": [
+      {
+        "description": "Generate dm_pack_datamodel.c from XML",
+        "command": "python3 $HOME/usr/include/rdkb/dm_pack_code_gen.py config-arm/TR181-CM.XML source/CMAgentSsp/dm_pack_datamodel.c"
+      }
+    ],
+    "header_sources": [
+      { "source": "config.h", "destination": "$HOME/usr/include/rdkb" },
+      { "source": "source/CMAgentSsp", "destination": "$HOME/usr/include/rdkb" },
+      { "source": "source/Custom", "destination": "$HOME/usr/include/rdkb" },
+      { "source": "source/TR-181/include", "destination": "$HOME/usr/include/rdkb" },
+      { "source": "source/TR-181/middle_layer_src", "destination": "$HOME/usr/include/rdkb" },
+      { "source": "source/test/CcspCMAgentDmlTest", "destination": "$HOME/usr/include/rdkb" }
+    ],
+    "build": {
+    "type": "autotools",
+    "build_dir": "build",
+    "configure_options_file": "cov_docker_script/configure_options.conf"
+    }
+  }
+}
