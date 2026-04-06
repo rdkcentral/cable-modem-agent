@@ -669,14 +669,14 @@ X_CISCO_COM_CableModem_GetParamStringValue
     
 
     /* check the parameter name and return the corresponding value */
-	ccspTraceWarning(("Debug11 Before MACAddress"));
+	CcspTraceWarning(("Debug11 Before MACAddress"));
 	AnscTraceWarning(("Debug11 Before MACAddress"));
     rc = strcmp_s( "MACAddress",strlen("MACAddress"),ParamName, &ind);
     ERR_CHK(rc);
     if((!ind) && (rc == EOK))
     {
 #if defined (_CM_MAC_SYSCFG_CACHE_)
-		ccspTraceWarning(("Debug12 Inside if defined"));
+		CcspTraceWarning(("Debug12 Inside if defined"));
 		AnscTraceWarning(("Debug12 Inside if defined"));
         if (syscfg_get(NULL, "cm_mac", pValue, *pUlSize) == 0)
         {
@@ -690,11 +690,11 @@ X_CISCO_COM_CableModem_GetParamStringValue
             return 0;
         }
 #endif
-ccspTraceWarning(("Debug13 Outside if defined"));
+CcspTraceWarning(("Debug13 Outside if defined"));
 AnscTraceWarning(("Debug13 Outside if defined"));
         if (CosaDmlCMGetDHCPInfo(NULL, &Info) != ANSC_STATUS_SUCCESS)
             return -1;
-ccspTraceWarning(("Debug14 Info.MACAddress %s",Info.MACAddress));
+CcspTraceWarning(("Debug14 Info.MACAddress %s",Info.MACAddress));
 AnscTraceWarning(("Debug14 Info.MACAddress %s",Info.MACAddress));
         rc = strcpy_s(pValue,*pUlSize,Info.MACAddress);
         if(rc != EOK)
