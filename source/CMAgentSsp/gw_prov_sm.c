@@ -1796,8 +1796,10 @@ static void *GWP_sysevent_threadfunc(void *data)
         int vallen  = sizeof(val);
         int err;
         async_id_t getnotification_asyncid;
+#if defined (INTEL_PUMA7)
         errno_t rc = -1;
         int ind = -1;
+#endif
 
         err = sysevent_getnotification(sysevent_fd, sysevent_token, name, &namelen,  val, &vallen, &getnotification_asyncid);
 
