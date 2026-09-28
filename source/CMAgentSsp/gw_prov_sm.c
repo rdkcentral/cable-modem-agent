@@ -266,8 +266,6 @@ int sendPseudoBridgeModeMessage(unsigned char enable);
 
 typedef enum {
     EROUTER_MODE,
-    IPV4STATUS,
-    IPV6STATUS,
     SYSTEM_RESTART,
     BRING_LAN,
     PNM_STATUS,
@@ -292,8 +290,6 @@ typedef struct
 
 static const GwpThread_MsgItem gwpthreadMsgArr[] = {
     {"erouter_mode",                               EROUTER_MODE},
-    {"ipv4-status",                                IPV4STATUS},
-    {"ipv6-status",                                IPV6STATUS},
     {"system-restart",                             SYSTEM_RESTART},
     {"bring-lan",                                  BRING_LAN},
     {"pnm-status",                                 PNM_STATUS},
@@ -1543,154 +1539,6 @@ static void GWP_ProcessUtopiaRestart(void)
 //     }
 }
 
-#if !defined(_PLATFORM_RASPBERRYPI_)
-/**************************************************************************/
-/*! \fn int GWP_ProcessIpv4Down();
- **************************************************************************
- *  \brief IPv4 WAN Side Routing - Exit
- *  \return 0
-**************************************************************************/
-static int GWP_ProcessIpv4Down(void)
-{
-    esafeErouterOperModeExtIf_e operMode;
-
-    /* Set operMode */
-    
-    eSafeDevice_GetErouterOperationMode(&operMode);
-	CcspTraceInfo((" operMode = %d \n", operMode));
-    if (operMode == DOCESAFE_EROUTER_OPER_IPV4_IPV6_extIf)
-    {
-        /* Now we have both --> Go to v6 only */
-        operMode = DOCESAFE_EROUTER_OPER_IPV6_extIf;
-    }
-    else
-    {
-        /* Only v4 --> Neither */
-        operMode = DOCESAFE_EROUTER_OPER_NOIPV4_NOIPV6_extIf;
-    }
-    
-    eSafeDevice_SetErouterOperationMode(operMode);
-
-    return 0;
-}
-
-/**************************************************************************/
-/*! \fn int GWP_ProcessIpv4Up
- **************************************************************************
- *  \brief IPv4 WAN Side Routing
- *  \return 0
-**************************************************************************/
-static int GWP_ProcessIpv4Up(void)
-{
-    esafeErouterOperModeExtIf_e operMode;
-
-    /*update esafe db with router provisioning status*/
-    eSafeDevice_SetProvisioningStatusProgress(ESAFE_PROV_STATE_FINISHED_extIf);
-
-    /* Set operMode */
-    eSafeDevice_GetErouterOperationMode(&operMode);
-	CcspTraceInfo((" operMode = %d \n", operMode));
-    if (operMode == DOCESAFE_EROUTER_OPER_IPV6_extIf)
-    {
-        /* Now we have both */
-        operMode = DOCESAFE_EROUTER_OPER_IPV4_IPV6_extIf;
-    }
-    else if (operMode == DOCESAFE_EROUTER_OPER_IPV4_IPV6_extIf)
-    {
-               CcspTraceInfo((" Retaining DOCESAFE_EROUTER_OPER_IPV4_IPV6_extIf mode\n"));
-        /* Dual mode */
-               operMode=DOCESAFE_EROUTER_OPER_IPV4_IPV6_extIf;
-    }
-    else
-    {
-        /* Only v4 */
-        operMode = DOCESAFE_EROUTER_OPER_IPV4_extIf;
-    }
-    eSafeDevice_SetErouterOperationMode(operMode);
-
-    printf("******************************\n");
-    printf("*        IPv4 Routing        *\n");
-    printf("******************************\n");
-
-    return 0;
-}
-
-/**************************************************************************/
-/*! \fn int GWP_ProcessIpV6Down()
- **************************************************************************
- *  \brief IPv6 WAN Side Routing - Exit
- *  \return 0
-**************************************************************************/
-static int GWP_ProcessIpv6Down(void)
-{
-    esafeErouterOperModeExtIf_e operMode;
-
-    /* Set operMode */
-    eSafeDevice_GetErouterOperationMode(&operMode);
-	CcspTraceInfo((" operMode = %d \n", operMode));
-    if (operMode == DOCESAFE_EROUTER_OPER_IPV4_IPV6_extIf)
-    {
-        /* Now we have both --> Go to v4 only */
-        operMode = DOCESAFE_EROUTER_OPER_IPV4_extIf;
-    }
-    else
-    {
-        /* Only v6 --> Neither */
-        operMode = DOCESAFE_EROUTER_OPER_NOIPV4_NOIPV6_extIf;
-    }
-    
-    eSafeDevice_SetErouterOperationMode(operMode);
-
-    return 0;
-}
-
-/**************************************************************************/
-/*! \fn int GWP_ProcessIpV6Up()
- **************************************************************************
- *  \brief IPv6 WAN Side Routing
- *  \param[in] SME Handler params
- *  \return 0
-**************************************************************************/
-static int GWP_ProcessIpv6Up(void)
-{
-    esafeErouterOperModeExtIf_e operMode;
-
-    /*update esafe db with router provisioning status*/
-    
-    eSafeDevice_SetProvisioningStatusProgress(ESAFE_PROV_STATE_FINISHED_extIf);
-    
-
-    /* Set operMode */
-    eSafeDevice_GetErouterOperationMode(&operMode);
-	CcspTraceInfo((" operMode = %d \n", operMode));
-    if (operMode == DOCESAFE_EROUTER_OPER_IPV4_extIf)
-    {
-        /* Now we have both */
-        operMode = DOCESAFE_EROUTER_OPER_IPV4_IPV6_extIf;
-        
-    }
-    else if (operMode == DOCESAFE_EROUTER_OPER_IPV4_IPV6_extIf)
-    {
-               CcspTraceInfo((" Retaining DOCESAFE_EROUTER_OPER_IPV4_IPV6_extIf mode\n"));
-        /* Dual mode */
-               operMode=DOCESAFE_EROUTER_OPER_IPV4_IPV6_extIf;
-    }
-    else
-    {
-        /* Only v6 */
-        operMode = DOCESAFE_EROUTER_OPER_IPV6_extIf;
-    }
-    eSafeDevice_SetErouterOperationMode(operMode);
-
-
-    printf("******************************\n");
-    printf("*        IPv6 Routing        *\n");
-    printf("******************************\n");
-
-    return 0;
-}
-#endif
-
 static void check_lan_wan_ready()
 {
 	char br_st[16] = { 0 };
@@ -1868,7 +1716,6 @@ static void updateErouterMode(char* val)
 static void *GWP_sysevent_threadfunc(void *data)
 {
     async_id_t erouter_mode_asyncid;
-    async_id_t ipv4_status_asyncid;
     async_id_t ipv6_status_asyncid;
     async_id_t system_restart_asyncid;
     async_id_t snmp_subagent_status_asyncid;
@@ -1892,8 +1739,6 @@ static void *GWP_sysevent_threadfunc(void *data)
         printf("\n");
     CcspTraceInfo((" Entry %s \n", __FUNCTION__));
     sysevent_setnotification(sysevent_fd, sysevent_token, "erouter_mode", &erouter_mode_asyncid);
-    sysevent_setnotification(sysevent_fd, sysevent_token, "ipv4-status",  &ipv4_status_asyncid);
-    sysevent_setnotification(sysevent_fd, sysevent_token, "ipv6-status",  &ipv6_status_asyncid);
     sysevent_setnotification(sysevent_fd, sysevent_token, "system-restart",  &system_restart_asyncid);
     sysevent_setnotification(sysevent_fd, sysevent_token, "snmp_subagent-status",  &snmp_subagent_status_asyncid);
     sysevent_setnotification(sysevent_fd, sysevent_token, "primary_lan_l3net",  &primary_lan_l3net_asyncid);
@@ -1951,8 +1796,10 @@ static void *GWP_sysevent_threadfunc(void *data)
         int vallen  = sizeof(val);
         int err;
         async_id_t getnotification_asyncid;
+#if defined (INTEL_PUMA7)
         errno_t rc = -1;
         int ind = -1;
+#endif
 
         err = sysevent_getnotification(sysevent_fd, sysevent_token, name, &namelen,  val, &vallen, &getnotification_asyncid);
 
@@ -1997,50 +1844,6 @@ static void *GWP_sysevent_threadfunc(void *data)
             if (ret_value == EROUTER_MODE)
             {
                 updateErouterMode(val);
-            }
-            else if (ret_value == IPV4STATUS)
-            {
-                rc = strcmp_s("up", strlen("up"),val, &ind);
-                ERR_CHK(rc);
-                if ((ind == 0) && (rc == EOK))
-                {
-#if !defined(_PLATFORM_RASPBERRYPI_)
-                    GWP_ProcessIpv4Up();
-#endif
-                }
-                else
-                {
-                    rc = strcmp_s("down", strlen("down"),val, &ind);
-                    ERR_CHK(rc);
-                    if ((ind == 0) && (rc == EOK))
-                    {
-#if !defined(_PLATFORM_RASPBERRYPI_)
-                         GWP_ProcessIpv4Down();
-#endif
-                    }
-                }
-            }
-            else if (ret_value == IPV6STATUS)
-            {
-                rc = strcmp_s("up", strlen("up"),val, &ind);
-                ERR_CHK(rc);
-                if ((ind == 0) && (rc == EOK))
-                {
-#if !defined(_PLATFORM_RASPBERRYPI_)
-                    GWP_ProcessIpv6Up();
-#endif
-                }
-                else
-                {
-                    rc = strcmp_s("down", strlen("down"),val, &ind);
-                    ERR_CHK(rc);
-                    if ((ind == 0) && (rc == EOK))
-                    {
-#if !defined(_PLATFORM_RASPBERRYPI_)
-                        GWP_ProcessIpv6Down();
-#endif
-                     }
-                }
             }
             else if (ret_value == SYSTEM_RESTART)
             {
