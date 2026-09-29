@@ -51,3 +51,6 @@ endif
 if CORE_NET_LIB_FEATURE_SUPPORT
 CcspCMAgentSsp_LDFLAGS += -lnet
 endif
+if ONESTACK_PRODUCT_REQ
+CcspCMAgentSsp_LDFLAGS += -ldevicemode -lonestack_syscfg -lonestack_log -lrdkb_feature_mode_gate
+endif
