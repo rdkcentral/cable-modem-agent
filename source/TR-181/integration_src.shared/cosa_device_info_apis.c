@@ -68,7 +68,9 @@
 
 //!!!  This code assumes that all data structures are the SAME in middle-layer APIs and HAL layer APIs
 //!!!  So it uses casting from one to the other
+#ifndef _GNU_SOURCE
 #define _GNU_SOURCE
+#endif
 #include <stdio.h>
 #include <string.h>
 #include "cosa_device_info_apis.h"
@@ -702,9 +704,14 @@ void convert_to_validFW(char *fw,char *valid_fw)
      * the pattern in the fw_file_name_type_table. Handle other patterns like _d30_signed.bin and
 	 * _svn_d30_signed.bin to get valid firmware name.
 	 */
+	if(fw == NULL || valid_fw == NULL)
+    {
+    CcspTraceError((" convert_to_validFW: NULL pointer argument \n"));
+	return;
+	}
 	index = 0;
-    /* CID 174247 fix */
-    if(strlen(fw) < VALID_fW_LEN)
+	/* CID 174247 fix */
+	if(strlen(fw) < VALID_fW_LEN)
     {
 	strncpy(fw_name_str, fw, VALID_fW_LEN-1); // CID 174247 : Buffer not null terminated
     }
