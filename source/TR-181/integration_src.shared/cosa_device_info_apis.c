@@ -491,17 +491,12 @@ ANSC_STATUS CosaDmlDIDownloadNow(ANSC_HANDLE hContext)
 		}	
 
 	}   */
-    
-    if(can_proceed_fw_download() == FW_DWNLD_MEMCHK_NOT_ENOUGH_MEM){
-        CcspTraceError(("CosaDmlDIDownloadNow : Not enough memory to proceed firmware download\n"));
-        return ANSC_STATUS_FAILURE;
-    }
-
 	pthread_t FWDL_Thread;
 	res = pthread_create(&FWDL_Thread, NULL, FWDL_ThreadFunc, "FWDL_ThreadFunc"); 
 	if(res != 0)
 	{
 		CcspTraceError(("Create FWDL_Thread error %d\n", res));
+            return ANSC_STATUS_FAILURE;
 	}	
 	
 	return ANSC_STATUS_SUCCESS;
@@ -596,6 +591,11 @@ void *FWDL_ThreadFunc(void *args)
 	FILE *log_wget = NULL;
 	    
 	pthread_detach(pthread_self());
+
+    if(can_proceed_fw_download() == FW_DWNLD_MEMCHK_NOT_ENOUGH_MEM){
+        CcspTraceError(("FWDL_ThreadFunc : Not enough memory to proceed firmware download\n"));
+        return NULL;
+    }
 
 	ret = cm_hal_HTTP_Download ();
         if( ret == RETURN_ERR)
