@@ -592,6 +592,7 @@ void *FWDL_ThreadFunc(void *args)
 	    
 	pthread_detach(pthread_self());
 
+		CcspTraceInfo(("Starting FW ThreadFunc \n"));
     if(can_proceed_fw_download() == FW_DWNLD_MEMCHK_NOT_ENOUGH_MEM){
         CcspTraceError(("FWDL_ThreadFunc : Not enough memory to proceed firmware download\n"));
         return NULL;
