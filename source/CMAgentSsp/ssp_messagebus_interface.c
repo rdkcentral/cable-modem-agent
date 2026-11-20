@@ -93,6 +93,7 @@ ssp_PnmMbi_MessageBusEngage
     )
 {
     ANSC_STATUS                 returnStatus       = ANSC_STATUS_SUCCESS;
+    int busInitStatus = 0;
     CCSP_Base_Func_CB           cb                 = {0};
    
 #ifndef ENABLE_RDK_WANMANAGER 
@@ -107,7 +108,7 @@ ssp_PnmMbi_MessageBusEngage
     }
 
     /* Connect to message bus */
-    returnStatus = 
+    busInitStatus = 
         CCSP_Message_Bus_Init
             (
                 component_id,
@@ -117,11 +118,11 @@ ssp_PnmMbi_MessageBusEngage
                 Ansc_FreeMemory_Callback            /* freefc,   use default */
             );
 
-    if ( returnStatus != ANSC_STATUS_SUCCESS )
+    if ( busInitStatus != 0 )
     {
-        CcspTraceError((" !!! PNM Message Bus Init ERROR !!!\n"));
+        CcspTraceError((" !!! PNM Message Bus Init ERROR !!! status=%d\n", busInitStatus));
 
-        return returnStatus;
+        return ANSC_STATUS_FAILURE;
     }
 
 #ifndef ENABLE_RDK_WANMANAGER
