@@ -2077,7 +2077,10 @@ static void * DocsisLinkMonitorThread(void *pVoid)
                     CcspTraceInfo(("%s %d - ping miss event is NOT set, Not setting wan down\n", __FUNCTION__, __LINE__));
                 }
             }
-            pthread_mutex_unlock(&gWanDownMutex);
+			else
+			{
+                 pthread_mutex_unlock(&gWanDownMutex);
+			}
             bThreadCreated = false;
             return NULL;
         }
