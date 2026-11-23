@@ -3618,15 +3618,15 @@ void *WAN_Failover_Simulation(void *arg)
 		// CID 330327 : Unchecked return value
         while (LinkdownWaitDone == false)
         {
-		    rc = pthread_cond_timedwait(&LinkdownCond,&Linkdownlock,&ts);//sleep based on tr181 link down timeout
-            if (rc == ETIMEDOUT)
+            rc = pthread_cond_timedwait(&LinkdownCond, &Linkdownlock, &ts);
+            if (rc != 0)
             {
+                if (rc != ETIMEDOUT)
+                {
+                    CcspTraceError(("pthread_cond_timedwait Error in %s, rc=%d\n", __FUNCTION__, rc));
+                }
                 break;
             }
-		    if(rc != 0)
-	        {
-		    CcspTraceInfo((" pthread_cond_timedwait Error in %s \n", __FUNCTION__));
-		    }
         }
 		cmAgent_Link_Status.DocsisLinkDown=false;
 	}
