@@ -406,7 +406,7 @@ pthread_mutex_t gWanDownMutex = PTHREAD_MUTEX_INITIALIZER;
 static bool bThreadCreated = false;
 static bool bIsWanStatusSetDown = false;
 static bool bLinkDownSimulation = false;
-static bool LinkdownWaitDone = false;
+static bool bLinkdownWaitDone = false;
 static char *g_Subsystem = "eRT." ;
 extern void *pBusHandle;
 
@@ -3554,7 +3554,7 @@ void CreateThreadandSendCondSignalToPthread()
 	else if(cmAgent_Link_Status.DocsisLinkDown==false)
 	{
         pthread_mutex_lock(&Linkdownlock);
-        LinkdownWaitDone = true;
+        bLinkdownWaitDone = true;
 		pthread_cond_signal(&LinkdownCond);
         pthread_mutex_unlock(&Linkdownlock);
 		CcspTraceInfo((" pthread_cond_signal CmAgent_Link.DocsisLinkDown false \n"));
@@ -3599,11 +3599,11 @@ void *WAN_Failover_Simulation(void *arg)
 		DocsisLd_cfg.DocsisLinkdownSim_running=true;
 		CreateDocsisLinkDown_TestFile();
 	}
-    LinkdownWaitDone = false;
+    bLinkdownWaitDone = false;
 	/********* wait for CmAgent_Link.DocsisLinkDownTimeOut****/
 	if(cmAgent_Link_Status.DocsisLinkDownTimeOut==0)
 	{
-        while (LinkdownWaitDone == false)
+        while (bLinkdownWaitDone == false)
         {
 		    rc = pthread_cond_wait(&LinkdownCond, &Linkdownlock);// conditional wait
             if (rc != 0)
@@ -3616,7 +3616,7 @@ void *WAN_Failover_Simulation(void *arg)
 	else
 	{
 		// CID 330327 : Unchecked return value
-        while (LinkdownWaitDone == false)
+        while (bLinkdownWaitDone == false)
         {
             rc = pthread_cond_timedwait(&LinkdownCond, &Linkdownlock, &ts);
             if (rc != 0)
