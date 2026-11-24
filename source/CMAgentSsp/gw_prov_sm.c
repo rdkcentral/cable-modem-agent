@@ -406,6 +406,7 @@ pthread_mutex_t gWanDownMutex = PTHREAD_MUTEX_INITIALIZER;
 static bool bThreadCreated = false;
 static bool bIsWanStatusSetDown = false;
 static bool bLinkDownSimulation = false;
+static bool bLinkdownWaitDone = false;
 static char *g_Subsystem = "eRT." ;
 extern void *pBusHandle;
 
@@ -2056,16 +2057,18 @@ static void * DocsisLinkMonitorThread(void *pVoid)
             {
                 CcspTraceInfo(("%s:%d, Failed to read CM status",__FUNCTION__,__LINE__));
             }
+            pthread_mutex_lock(&gWanDownMutex);
             if ((!strcmp(cBuf,"OPERATIONAL")) && (STATUS_UP != eLinkStatus))
             {
+                pthread_mutex_unlock(&gWanDownMutex);
                 CcspTraceInfo(("%s %d - CM status is Still:%s\n", __FUNCTION__, __LINE__,cBuf));
                 memset(cBuf,0,sizeof(cBuf));
                 sysevent_get(sysevent_fd_gs, sysevent_token_gs, "ping-status", cBuf, sizeof(cBuf));
                 if (strcmp(cBuf,"missed") == 0)
                 {
                     CcspTraceInfo(("%s %d - ping miss event is set, setting wan down\n", __FUNCTION__, __LINE__));
-                    bIsWanStatusSetDown = true;
                     pthread_mutex_lock(&gWanDownMutex);
+                    bIsWanStatusSetDown = true;
                     setWanStatusDown ();
                     pthread_mutex_unlock(&gWanDownMutex);
                 }
@@ -2074,19 +2077,22 @@ static void * DocsisLinkMonitorThread(void *pVoid)
                     CcspTraceInfo(("%s %d - ping miss event is NOT set, Not setting wan down\n", __FUNCTION__, __LINE__));
                 }
             }
+			else
+			{
+                 pthread_mutex_unlock(&gWanDownMutex);
+			}
             bThreadCreated = false;
             return NULL;
         }
     }
+    pthread_mutex_lock(&gWanDownMutex);
     if((STATUS_DOWN == eLinkStatus) && (false == bIsWanStatusSetDown))
     {
         CcspTraceInfo(("%s %d - Setting the WAN status down\n", __FUNCTION__, __LINE__));
         bIsWanStatusSetDown = true;
-        pthread_mutex_lock(&gWanDownMutex);
         setWanStatusDown ();
-        pthread_mutex_unlock(&gWanDownMutex);
     }
-    
+    pthread_mutex_unlock(&gWanDownMutex);
     bThreadCreated = false;
     return NULL;
 }
@@ -3486,7 +3492,7 @@ void *GWP_EventHandler(void *arg)
         //CosaDmlSetParamValues(/*WAN_COMPONENT_NAME*/"eRT.com.cisco.spvtg.ccsp.lmlite", /*WAN_DBUS_PATH*/"/com/cisco/spvtg/ccsp/lmlite", paramName, paramValue, ccsp_string, true);
 
     } while(1);
-   pthread_exit(NULL);
+
 }
 #if defined (WAN_FAILOVER_SUPPORTED)
 /*************************************************************************************************
@@ -3547,7 +3553,10 @@ void CreateThreadandSendCondSignalToPthread()
 	}
 	else if(cmAgent_Link_Status.DocsisLinkDown==false)
 	{
+        pthread_mutex_lock(&Linkdownlock);
+        bLinkdownWaitDone = true;
 		pthread_cond_signal(&LinkdownCond);
+        pthread_mutex_unlock(&Linkdownlock);
 		CcspTraceInfo((" pthread_cond_signal CmAgent_Link.DocsisLinkDown false \n"));
 	}
 }
@@ -3580,7 +3589,7 @@ void *WAN_Failover_Simulation(void *arg)
 	pthread_cond_init(&LinkdownCond,&LinkdownAttr);
 	pthread_mutex_lock(&Linkdownlock);
 	set_time(cmAgent_Link_Status.DocsisLinkDownTimeOut);
-	int rc;
+	int rc = 0;
 	if(cmAgent_Link_Status.DocsisLinkStatus== true)
 	{
         bLinkDownSimulation = true;
@@ -3590,19 +3599,35 @@ void *WAN_Failover_Simulation(void *arg)
 		DocsisLd_cfg.DocsisLinkdownSim_running=true;
 		CreateDocsisLinkDown_TestFile();
 	}
+    bLinkdownWaitDone = false;
 	/********* wait for CmAgent_Link.DocsisLinkDownTimeOut****/
 	if(cmAgent_Link_Status.DocsisLinkDownTimeOut==0)
 	{
-		pthread_cond_wait(&LinkdownCond, &Linkdownlock);// conditional wait
+        while (bLinkdownWaitDone == false)
+        {
+		    rc = pthread_cond_wait(&LinkdownCond, &Linkdownlock);// conditional wait
+            if (rc != 0)
+            {
+                CcspTraceError(("pthread_cond_wait Error in %s, rc=%d\n", __FUNCTION__, rc));
+                break;
+            }
+        }
 	}
 	else
 	{
 		// CID 330327 : Unchecked return value
-		rc = pthread_cond_timedwait(&LinkdownCond,&Linkdownlock,&ts);//sleep based on tr181 link down timeout
-		if(rc)
-	        {
-		    CcspTraceInfo((" pthread_cond_timedwait Error in %s \n", __FUNCTION__));
-		}
+        while (bLinkdownWaitDone == false)
+        {
+            rc = pthread_cond_timedwait(&LinkdownCond, &Linkdownlock, &ts);
+            if (rc != 0)
+            {
+                if (rc != ETIMEDOUT)
+                {
+                    CcspTraceError(("pthread_cond_timedwait Error in %s, rc=%d\n", __FUNCTION__, rc));
+                }
+                break;
+            }
+        }
 		cmAgent_Link_Status.DocsisLinkDown=false;
 	}
 	
