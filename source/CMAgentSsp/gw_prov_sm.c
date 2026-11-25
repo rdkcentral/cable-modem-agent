@@ -406,7 +406,9 @@ pthread_mutex_t gWanDownMutex = PTHREAD_MUTEX_INITIALIZER;
 static bool bThreadCreated = false;
 static bool bIsWanStatusSetDown = false;
 static bool bLinkDownSimulation = false;
+#if defined (WAN_FAILOVER_SUPPORTED)
 static bool bLinkdownWaitDone = false;
+#endif
 static char *g_Subsystem = "eRT." ;
 extern void *pBusHandle;
 
