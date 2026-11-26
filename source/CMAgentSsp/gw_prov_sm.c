@@ -406,7 +406,6 @@ pthread_mutex_t gWanDownMutex = PTHREAD_MUTEX_INITIALIZER;
 static bool bThreadCreated = false;
 static bool bIsWanStatusSetDown = false;
 static bool bLinkDownSimulation = false;
-static bool bLinkdownWaitDone = false;
 static char *g_Subsystem = "eRT." ;
 extern void *pBusHandle;
 
@@ -423,6 +422,7 @@ pthread_cond_t LinkdownCond=PTHREAD_COND_INITIALIZER;
 pthread_mutex_t Linkdownlock=PTHREAD_MUTEX_INITIALIZER;
 pthread_condattr_t LinkdownAttr;
 static pthread_t WANSimptr;
+static bool bLinkdownWaitDone = false;
 struct timespec ts;
 extern CmAgent_Link_Status cmAgent_Link_Status;
 typedef struct{
